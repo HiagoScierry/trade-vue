@@ -85,80 +85,8 @@ export default {
         cpf: '',
         amountValue: 0
       },
-      users:[
-        {
-          name: 'João',
-          cpf: '123456789',
-          amountValue: 1000
-        },
-        {
-          name: 'Maria',
-          cpf: '987654321',
-          amountValue: 1000
-        }
-      ],
-      enterprises: [
-        {
-          id: 1,
-          name: 'Apple',
-          quantity: 100000,
-          value: 0.01
-        },
-        {
-          id: 2,
-          name: 'Microsoft',
-          quantity: 100000,
-          value: 0.01
-        },
-        {
-          id: 3,
-          name: 'Google',
-          quantity: 100000,
-          value: 0.01
-        },
-        {
-          id: 4,
-          name: 'Amazon',
-          quantity: 100000,
-          value: 0.01
-        },
-        {
-          id: 5,
-          name: 'Facebook',
-          quantity: 100000,
-          value: 0.01
-        },
-        {
-          id: 6,
-          name: 'Tesla',
-          quantity: 100000,
-          value: 0.01
-        },
-        {
-          id: 7,
-          name: 'Twitter',
-          quantity: 100000,
-          value: 0.01
-        },
-        {
-          id: 8,
-          name: 'Uber',
-          quantity: 100000,
-          value: 0.01
-        },
-        {
-          id: 9,
-          name: 'Netflix',
-          quantity: 100000,
-          value: 0.01
-        },
-        {
-          id: 10,
-          name: 'Spotify',
-          quantity: 100000,
-          value: 0.01
-        }
-      ]
+      users: [],
+      enterprises: []
     }
   },
   methods: {

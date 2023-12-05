@@ -1,5 +1,5 @@
 <template>
-    <div :class="{'overflow-hidden': openModal}" class="bg-slate-700 text-white w-screen P-2">
+    <div :class="{'overflow-hidden': openModal}" >
         <slot></slot>
     </div>
 </template>
