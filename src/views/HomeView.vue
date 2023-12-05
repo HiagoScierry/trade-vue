@@ -4,8 +4,9 @@
       <div class="text-4xl">TRADER VUE</div>
       <nav>
         <ul class="flex gap-4">
-          <li class="cursor-pointer" @click="openModalToLogin()">Entrar</li>
-          <li class="cursor-pointer">Registre-se</li>
+          <li class="cursor-pointer" @click="adminMode">Modo Admin</li>
+          <li class="cursor-pointer" @click="openModalToLogin">Entrar</li>
+          <li class="cursor-pointer" @click="openModalToRegister">Registre-se</li>
         </ul>
       </nav>
     </div>
@@ -18,14 +19,21 @@
             <p class="text-md text-slate-300">Veja a lista de ações mais atualizada da UFES</p>
           </div>
           <div>
-            <buttonComponent type="primary" text="Adicionar Ação" @click="openModalToAddEnterprise">/</buttonComponent>
+            <buttonComponent type="primary" text="Adicionar Ação" @click="openModalToAddEnterprise"
+              >/</buttonComponent
+            >
           </div>
         </div>
         <tableListComponent></tableListComponent>
       </div>
     </div>
 
-
+    <formRegister
+      :show="showFormRegister"
+      :closeMethod="closeModalToRegister"
+      :registerMethod="registerMethod"
+      :user="user"
+    ></formRegister>
     <formLoginComponent
       :show="showFormLogin"
       :closeMethod="closeModalToLogin">
@@ -44,6 +52,7 @@ import buttonComponent from '@/Components/buttonComponent.vue'
 import tableListComponent from '@/Components/tableList.vue'
 import formEnterpriseComponent from '@/Components/formEnterprise.vue'
 import formLoginComponent from '@/Components/formLogin.vue'
+import formRegister from '../components/formRegister.vue'
 
 export default {
   name: 'HomeView',
@@ -52,7 +61,8 @@ export default {
     buttonComponent,
     tableListComponent,
     formEnterpriseComponent,
-    formLoginComponent
+    formLoginComponent,
+    formRegister
   },
   // create data
   data: function () {
@@ -60,25 +70,31 @@ export default {
       showAnyModal: false,
       showFormEnterprise: false,
       showFormLogin: false,
+      showFormRegister: false,
       enterprise: {
         name: '',
         value: 0,
         quantity: 0
+      },
+      user: {
+        name: '',
+        cpf: '',
+        amountValue: 0
       }
     }
   },
   methods: {
     openModalToAddEnterprise() {
-      this.showAnyModal = true;
-      this.showFormEnterprise = true;
+      this.showAnyModal = true
+      this.showFormEnterprise = true
     },
     closeModalToAddEnterprise() {
-      this.showAnyModal = false;
-      this.showFormEnterprise = false;
+      this.showAnyModal = false
+      this.showFormEnterprise = false
     },
-    addEnterprise(){
+    addEnterprise() {
       //Make a funcion to save in store
-      this.closeModalToAddEnterprise();
+      this.closeModalToAddEnterprise()
       this.enterprise = {
         name: '',
         value: 0,
@@ -87,22 +103,37 @@ export default {
     },
 
     openModalToLogin() {
-      this.showAnyModal = true;
-      this.showFormLogin = true;
+      this.showAnyModal = true
+      this.showFormLogin = true
     },
     closeModalToLogin() {
-      console.log('closeModalToLogin');
-      this.showAnyModal = false;
-      this.showFormLogin = false;
+      console.log('closeModalToLogin')
+      this.showAnyModal = false
+      this.showFormLogin = false
     },
-
     loginMethod() {
       //Make a funcion to save in store
-      this.closeModalToLogin();
+      this.closeModalToLogin()
+    },
+
+    openModalToRegister() {
+      this.showAnyModal = true
+      this.showFormRegister = true
+    },
+
+    closeModalToRegister() {
+      this.showAnyModal = false
+      this.showFormRegister = false
+    },
+
+    registerMethod() {
+      //Make a funcion to save in store
+      this.closeModalToRegister()
+    },
+
+    adminMode() {
+      //setModeAdmin
     }
-
-
-
   }
 }
 </script>
