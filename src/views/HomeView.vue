@@ -24,7 +24,7 @@
             >
           </div>
         </div>
-        <tableListComponent></tableListComponent>
+        <tableListComponent :items="enterprises"></tableListComponent>
       </div>
     </div>
 
@@ -97,7 +97,68 @@ export default {
           amountValue: 1000
         }
       ],
-      enterprises: []
+      enterprises: [
+        {
+          id: 1,
+          name: 'Apple',
+          quantity: 100000,
+          value: 0.01
+        },
+        {
+          id: 2,
+          name: 'Microsoft',
+          quantity: 100000,
+          value: 0.01
+        },
+        {
+          id: 3,
+          name: 'Google',
+          quantity: 100000,
+          value: 0.01
+        },
+        {
+          id: 4,
+          name: 'Amazon',
+          quantity: 100000,
+          value: 0.01
+        },
+        {
+          id: 5,
+          name: 'Facebook',
+          quantity: 100000,
+          value: 0.01
+        },
+        {
+          id: 6,
+          name: 'Tesla',
+          quantity: 100000,
+          value: 0.01
+        },
+        {
+          id: 7,
+          name: 'Twitter',
+          quantity: 100000,
+          value: 0.01
+        },
+        {
+          id: 8,
+          name: 'Uber',
+          quantity: 100000,
+          value: 0.01
+        },
+        {
+          id: 9,
+          name: 'Netflix',
+          quantity: 100000,
+          value: 0.01
+        },
+        {
+          id: 10,
+          name: 'Spotify',
+          quantity: 100000,
+          value: 0.01
+        }
+      ]
     }
   },
   methods: {
@@ -124,7 +185,6 @@ export default {
       this.showFormLogin = true
     },
     closeModalToLogin() {
-      console.log('closeModalToLogin')
       this.showAnyModal = false
       this.showFormLogin = false
     },
@@ -134,6 +194,8 @@ export default {
     },
 
     openModalToRegister() {
+      this.closeModalToLogin()
+
       this.showAnyModal = true
       this.showFormRegister = true
     },
