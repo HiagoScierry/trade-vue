@@ -11,7 +11,7 @@
 
       <div class="flex justify-end items-center gap-5 ">
         <selectComponent
-          :options="users"
+          :options="users.map(user => ({ text: user.name, value: user.id }))"
           :value="user"
           label="Entre com o usuario"
           placeholder="Selecione um usuário"
@@ -22,7 +22,7 @@
       </div>
 
       <div>
-        <p class="text-sm text-slate-300">Não tem conta? <a class="hover:underline">Cadastre-se</a></p>
+        <p class="text-sm text-slate-300">Não tem conta? <a class="hover:underline cursor-pointer" @click="registerOpenModal">Cadastre-se</a></p>
       </div>
     </div>
   </modalComponent>
@@ -55,6 +55,10 @@ export default {
       required: true
     },
     closeMethod: {
+      type: Function,
+      required: true
+    },
+    registerOpenModal: {
       type: Function,
       required: true
     }

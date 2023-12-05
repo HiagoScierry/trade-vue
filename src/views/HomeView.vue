@@ -36,7 +36,11 @@
     ></formRegister>
     <formLoginComponent
       :show="showFormLogin"
-      :closeMethod="closeModalToLogin">
+      :closeMethod="closeModalToLogin"
+      :loginMethod="loginMethod"
+      :registerOpenModal="openModalToRegister"
+      :users="users"
+      >
     </formLoginComponent>
     <formEnterpriseComponent
       :enterprise="enterprise"
@@ -80,7 +84,20 @@ export default {
         name: '',
         cpf: '',
         amountValue: 0
-      }
+      },
+      users:[
+        {
+          name: 'João',
+          cpf: '123456789',
+          amountValue: 1000
+        },
+        {
+          name: 'Maria',
+          cpf: '987654321',
+          amountValue: 1000
+        }
+      ],
+      enterprises: []
     }
   },
   methods: {
