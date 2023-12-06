@@ -12,5 +12,5 @@ export default new Vuex.Store({
         userStore,
         tradeStore,
         loggedStore
-    }
+    },
 })

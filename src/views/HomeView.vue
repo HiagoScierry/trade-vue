@@ -58,6 +58,7 @@ import formEnterpriseComponent from '@/Components/formEnterprise.vue'
 import formLoginComponent from '@/Components/formLogin.vue'
 import formRegister from '../components/formRegister.vue'
 
+
 export default {
   name: 'HomeView',
   components: {
@@ -85,10 +86,17 @@ export default {
         cpf: '',
         amountValue: 0
       },
-      users: [],
-      enterprises: []
     }
   },
+  computed: {
+    enterprises() {
+      return this.$store.state.tradeStore.enterprises
+    },
+    users() {
+      return this.$store.state.userStore.users
+    }
+  },
+
   methods: {
     openModalToAddEnterprise() {
       this.showAnyModal = true

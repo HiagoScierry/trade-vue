@@ -11,7 +11,7 @@
 
       <div class="flex justify-end items-center gap-5 ">
         <selectComponent
-          :options="users.map(user => ({ text: user.name, value: user.id }))"
+          :options="users.map(user => ({ text: user.name, value: user.cpf }))"
           :value="user"
           label="Entre com o usuario"
           placeholder="Selecione um usuário"

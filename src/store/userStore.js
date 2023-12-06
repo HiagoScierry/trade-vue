@@ -15,7 +15,18 @@ import { createStore } from "vuex";
 
 export default createStore({
     state: {
-        users: [],
+        users: [
+            {
+                name: "João",
+                cpf: "123.456.789-00",
+                amountValue: 1000,
+            },
+            {
+                name:"Maria",
+                cpf: "987.654.321-00",
+                amountValue: 2000,
+            }
+        ],
     },
     mutations: {
         ADD_USER(state, user) {
