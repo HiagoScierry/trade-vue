@@ -4,10 +4,9 @@
       <div class="text-4xl">TRADER VUE</div>
       <nav>
         <ul class="flex gap-4">
-          <li class="cursor-pointer" v-if="modeAdmin" @click="adminMode">Modo Admin</li>
-          <li class="cursor-pointer" v-if="!modeAdmin && !modeUser" @click="openModalToLogin">Entrar</li>
-          <li class="cursor-pointer" v-if="!modeAdmin && !modeUser" @click="openModalToRegister">Registre-se</li>
-          <li class="cursor-pointer" v-if="modeAdmin || modeUser" @click="exitAdminMode">Sair</li>
+          <li class="cursor-pointer" @click="adminMode">Modo Admin</li>
+          <li class="cursor-pointer" @click="openModalToLogin">Entrar</li>
+          <li class="cursor-pointer" @click="openModalToRegister">Registre-se</li>
         </ul>
       </nav>
     </div>
@@ -20,7 +19,11 @@
             <p class="text-md text-slate-300">Veja a lista de ações mais atualizada da UFES</p>
           </div>
           <div>
-            <buttonComponent type="primary" text="Adicionar Ação" @click="openModalToAddEnterprise"
+            <buttonComponent
+              v-if="modeAdmin"
+              type="primary"
+              text="Adicionar Ação"
+              @click="openModalToAddEnterprise"
               >/</buttonComponent
             >
           </div>
@@ -41,7 +44,7 @@
       :loginMethod="loginMethod"
       :registerOpenModal="openModalToRegister"
       :users="users"
-      >
+    >
     </formLoginComponent>
     <formEnterpriseComponent
       :enterprise="enterprise"
@@ -57,10 +60,7 @@ import buttonComponent from '@/Components/buttonComponent.vue'
 import tableListComponent from '@/Components/tableList.vue'
 import formEnterpriseComponent from '@/Components/formEnterprise.vue'
 import formLoginComponent from '@/Components/formLogin.vue'
-import formRegister from '../components/formRegister.vue'
-
-import store from '@/store'
-
+import formRegister from '@/components/formRegister.vue'
 
 export default {
   name: 'HomeView',
@@ -71,9 +71,9 @@ export default {
     formEnterpriseComponent,
     formLoginComponent,
     formRegister
+
   },
-  // create data
-  data: function () {
+  data() {
     return {
       showAnyModal: false,
       showFormEnterprise: false,
@@ -88,11 +88,6 @@ export default {
         name: '',
         cpf: '',
         amountValue: 0
-      },
-      currentUser: {
-        name: '',
-        cpf: '',
-        amountValue: 0
       }
     }
   },
@@ -102,12 +97,6 @@ export default {
     },
     users() {
       return this.$store.state.userStore.users
-    },
-    modeAdmin() {
-      return this.$store.state.loggedStore.adminIsLogged
-    },
-    modeUser() {
-      return this.$store.state.loggedStore.userIsLogged
     }
   },
 
