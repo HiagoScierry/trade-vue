@@ -5,8 +5,12 @@
       <nav>
         <ul class="flex gap-4">
           <li class="cursor-pointer" v-if="modeAdmin" @click="adminMode">Modo Admin</li>
-          <li class="cursor-pointer" v-if="!modeAdmin && !modeUser" @click="openModalToLogin">Entrar</li>
-          <li class="cursor-pointer" v-if="!modeAdmin && !modeUser" @click="openModalToRegister">Registre-se</li>
+          <li class="cursor-pointer" v-if="!modeAdmin && !modeUser" @click="openModalToLogin">
+            Entrar
+          </li>
+          <li class="cursor-pointer" v-if="!modeAdmin && !modeUser" @click="openModalToRegister">
+            Registre-se
+          </li>
           <li class="cursor-pointer" v-if="modeAdmin || modeUser" @click="exitAdminMode">Sair</li>
         </ul>
       </nav>
@@ -20,9 +24,30 @@
             <p class="text-md text-slate-300">Veja a lista de ações mais atualizada da UFES</p>
           </div>
           <div>
-            <buttonComponent type="primary" text="Adicionar Ação" @click="openModalToAddEnterprise"
+            <buttonComponent
+              v-if="modeAdmin"
+              type="primary"
+              text="Adicionar Ação"
+              @click="openModalToAddEnterprise"
               >/</buttonComponent
             >
+            <div class="flex justify-end items-center flex-col">
+              <!-- INFO USER -->
+              <div v-if="modeUser">
+                <div class="text-xl mb-2">Olá, {{ currentUser.name }}</div>
+                <div class="text-base mb-2">CPF: {{ currentUser.cpf }}</div>
+                <div class="text-md text-slate-300">
+                  Seu saldo é de:
+                  {{
+                    new Intl.NumberFormat('pt-BR', {
+                      style: 'currency',
+                      currency: 'BRL',
+                      minimumFractionDigits: 2
+                    }).format(currentUser.amountValue)
+                  }}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <tableListComponent :items="enterprises"></tableListComponent>
@@ -33,7 +58,7 @@
       :show="showFormRegister"
       :closeMethod="closeModalToRegister"
       :registerMethod="registerMethod"
-      :user="user"
+      :user="currentUser"
     ></formRegister>
     <formLoginComponent
       :show="showFormLogin"
@@ -41,7 +66,8 @@
       :loginMethod="loginMethod"
       :registerOpenModal="openModalToRegister"
       :users="users"
-      >
+      @changeSelectedCPFValue="setSelectedCPFValue"
+    >
     </formLoginComponent>
     <formEnterpriseComponent
       :enterprise="enterprise"
@@ -58,9 +84,6 @@ import tableListComponent from '@/Components/tableList.vue'
 import formEnterpriseComponent from '@/Components/formEnterprise.vue'
 import formLoginComponent from '@/Components/formLogin.vue'
 import formRegister from '../components/formRegister.vue'
-
-import store from '@/store'
-
 
 export default {
   name: 'HomeView',
@@ -84,11 +107,7 @@ export default {
         value: 0,
         quantity: 0
       },
-      user: {
-        name: '',
-        cpf: '',
-        amountValue: 0
-      },
+      selectedCPFValue: '',
       currentUser: {
         name: '',
         cpf: '',
@@ -141,6 +160,13 @@ export default {
     loginMethod() {
       //Make a funcion to save in store
       this.closeModalToLogin()
+      this.currentUser = this.users.find((user) => user.cpf === this.selectedCPFValue)
+      this.$store.dispatch('loginUser', this.currentUser)
+    },
+
+    setSelectedCPFValue(value) {
+      console.log(value)
+      this.selectedCPFValue = value
     },
 
     openModalToRegister() {

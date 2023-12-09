@@ -9,20 +9,23 @@
 
       <h1 class="text-xl font-bold uppercase">Login</h1>
 
-      <div class="flex justify-end items-center gap-5 ">
+      <div class="flex justify-end items-center gap-5">
         <selectComponent
-          :options="users.map(user => ({ text: user.name, value: user.cpf }))"
-          :value="user"
+          :options="users.map((user) => ({ text: user.name, value: user.cpf }))"
+          :value="selectedCPFValue"
           label="Entre com o usuario"
           placeholder="Selecione um usuário"
-          @change="user = $event.target.value"
+          @change="changeValue"
         ></selectComponent>
 
         <buttonComponent @click="loginMethod" type="success" text="Logar"></buttonComponent>
       </div>
 
       <div>
-        <p class="text-sm text-slate-300">Não tem conta? <a class="hover:underline cursor-pointer" @click="registerOpenModal">Cadastre-se</a></p>
+        <p class="text-sm text-slate-300">
+          Não tem conta?
+          <a class="hover:underline cursor-pointer" @click="registerOpenModal">Cadastre-se</a>
+        </p>
       </div>
     </div>
   </modalComponent>
@@ -61,7 +64,12 @@ export default {
     registerOpenModal: {
       type: Function,
       required: true
-    }
+    },
+  },
+  methods: {
+    changeValue (event) {
+      this.$emit('changeSelectedCPFValue', event.target.value)
+    },
   }
 }
 </script>
