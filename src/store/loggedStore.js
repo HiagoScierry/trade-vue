@@ -1,37 +1,21 @@
-import { createStore } from "vuex";
-
-export default createStore({
+export default {
     state: {
-        adminIsLogged: false,
+        adminIsLogged: true,
         userIsLogged: false,
         user: null
     },
     mutations: {
-        SET_ADMIN_LOGGED(state, adminIsLogged) {
-            state.adminIsLogged = adminIsLogged;
-            state.userIsLogged = !adminIsLogged;
-            state.user = null;
-        },
-        SET_USER_LOGGED(state, userIsLogged) {
-            state.userIsLogged = userIsLogged;
-            state.adminIsLogged = !userIsLogged;
-        },
-        SET_USER(state, user) {
-            state.user = user;
-        },
+        EXIT_ADMIN(state) {
+            state.adminIsLogged = false;
+        }
+
     },
     actions: {
-        setAdminLogged(context, adminIsLogged) {
-            context.commit("SET_ADMIN_LOGGED", adminIsLogged);
-        },
-        setUserLogged(context, userIsLogged) {
-            context.commit("SET_USER_LOGGED", userIsLogged);
-        },
-        setUser(context, user) {
-            context.commit("SET_USER", user);
-        },
+        exitAdmin(context) {
+            context.commit('EXIT_ADMIN');
+        }
     },
 
 
-    
-});
+
+};

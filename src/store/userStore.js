@@ -1,5 +1,3 @@
-import { createStore } from "vuex";
-
 // interface investEnterprises {
 //     idEnterprise: number;
 //     amountValue: number;
@@ -13,7 +11,7 @@ import { createStore } from "vuex";
 //     investEnterprises: investEnterprises[];
 // }
 
-export default createStore({
+export default {
     state: {
         users: [
             {
@@ -29,27 +27,7 @@ export default createStore({
         ],
     },
     mutations: {
-        ADD_USER(state, user) {
-            state.users.push(user);
-        },
-        REMOVE_USER(state, user) {
-            state.users.splice(state.users.indexOf(user), 1);
-        },
-        EDIT_USER(state, user) {
-            state.users.splice(state.users.indexOf(user), 1, user);
-        },
     },
     actions: {
-        addUser(context, user) {
-            context.commit("ADD_USER", user);
-        },
-        removeUser(context, user) {
-            context.commit("REMOVE_USER", user);
-        },
-        editUser(context, user) {
-            context.commit("EDIT_USER", user);
-        },
     },
-
-
-});
+}

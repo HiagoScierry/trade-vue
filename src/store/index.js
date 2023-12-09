@@ -9,8 +9,8 @@ import loggedStore from './loggedStore'
 
 export default new Vuex.Store({
     modules: {
-        userStore,
-        tradeStore,
-        loggedStore
+        userStore: userStore,
+        tradeStore :tradeStore,
+        loggedStore :loggedStore
     },
 })
