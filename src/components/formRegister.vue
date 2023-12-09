@@ -44,7 +44,9 @@
 </template>
 
 <script>
-import buttonComponent from './buttonComponent.vue'
+import buttonComponent from './buttoncomponent.vue'
+import modalComponent from './modalcomponent.vue'
+import inputComponent from './inputcomponent.vue'
 
 export default {
   name: 'formRegister',

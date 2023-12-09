@@ -11,13 +11,7 @@
       </nav>
     </div>
 
-    <div class="mt-4">
-      <!-- Alternância entre os modos -->
-      <AdminMode v-if="isAdminMode" />
-      <UserMode v-else />
-    </div>
-
-        <div class="mt-4 flex flex-col justify-center items-center">
+    <div class="mt-4 flex flex-col justify-center items-center">
       <div class="w-10/12 m-auto">
         <div class="flex justify-between items-center mb-5">
           <div>
@@ -53,26 +47,31 @@
       :show="showFormEnterprise"
       :closeMethod="closeModalToAddEnterprise"
     ></formEnterpriseComponent>
-
   </layout>
 </template>
 
 <script>
-import LayoutComponent from '@/Components/layout.vue';
-import AdminMode from '@/components/AdminMode.vue';
-import UserMode from '@/components/UserMode.vue';
+import LayoutComponent from '@/Components/layout.vue'
+import buttonComponent from '@/Components/buttonComponent.vue'
+import tableListComponent from '@/Components/tableList.vue'
+import formEnterpriseComponent from '@/Components/formEnterprise.vue'
+import formLoginComponent from '@/Components/formLogin.vue'
+import formRegister from '../components/formRegister.vue'
+
 
 export default {
   name: 'HomeView',
   components: {
     layout: LayoutComponent,
-    AdminMode,
-    UserMode,
+    buttonComponent,
+    tableListComponent,
+    formEnterpriseComponent,
+    formLoginComponent,
+    formRegister
   },
-  data() {
+  // create data
+  data: function () {
     return {
-      showAnyModal: false,
-      isAdminMode: true, // Variável para controlar o modo admin ou usuário
       showAnyModal: false,
       showFormEnterprise: false,
       showFormLogin: false,
@@ -87,7 +86,7 @@ export default {
         cpf: '',
         amountValue: 0
       },
-    };
+    }
   },
   computed: {
     enterprises() {
@@ -97,13 +96,8 @@ export default {
       return this.$store.state.userStore.users
     }
   },
-  
+
   methods: {
-    adminMode() {
-      // Lógica para alternar entre os modos
-      this.isAdminMode = !this.isAdminMode;
-    },
-    
     openModalToAddEnterprise() {
       this.showAnyModal = true
       this.showFormEnterprise = true
@@ -155,6 +149,6 @@ export default {
     adminMode() {
       //setModeAdmin
     }
-  },
-};
+  }
+}
 </script>

@@ -29,7 +29,9 @@
 </template>
 
 <script>
+import modalComponent from './modalcomponent.vue'
 import buttonComponent from './buttonComponent.vue'
+import selectComponent from './selectComponent.vue'
 
 export default {
   name: 'formLoginComponent',
