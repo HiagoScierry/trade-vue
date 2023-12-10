@@ -75,6 +75,7 @@
       :closeMethod="closeModalToAddEnterprise"
       :addMethod="addEnterprise"
     ></formEnterpriseComponent>
+    <buttonComponent v-if="modeUser" @click="buyStocks">Comprar Ações</buttonComponent>
   </layout>
 </template>
 
@@ -230,7 +231,27 @@ export default {
       } else if (this.modeUser) {
         this.exitUserMode()
       }
-    }
+    },
+    buyStocks() {
+      // Lógica para realizar a compra de ações
+      const stockToBuy = this.enterprises[0]; // Exemplo: Comprando a primeira ação da lista
+      const currentUser = this.user;
+
+      if (currentUser.amountValue >= stockToBuy.value) {
+        currentUser.amountValue -= stockToBuy.value;
+          currentUser.investEnterprises.push({
+          idEnterprise: stockToBuy.id,
+          amountValue: stockToBuy.value,
+          countActions: 1,
+          });
+
+        // Atualize o usuário na store Vuex
+        this.$store.dispatch('updateUser', currentUser);
+        alert('Compra realizada com sucesso!');
+      } else {
+        alert('Saldo insuficiente para realizar a compra.');
+      }
+    },
   }
 }
 </script>
