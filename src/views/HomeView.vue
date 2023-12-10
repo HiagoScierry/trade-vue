@@ -50,7 +50,7 @@
             </div>
           </div>
         </div>
-          <tableListComponent :deleteMethod="deleteEnterprise" :items="enterprises"></tableListComponent>
+          <tableListComponent :deleteMethod="deleteEnterprise" :adminMode="modeAdmin" :userMode="modeUser" :items="enterprises"></tableListComponent>
       </div>
     </div>
 

@@ -8,7 +8,8 @@
           Quantidade de ações
         </th>
         <th scope="col" class="px-6 py-3 text-xs font-bold text-left uppercase">Valor Unitario</th>
-        <th scope="col" class="px-6 py-3 text-xs font-bold text-right uppercase">Delete</th>
+        <th scope="col" v-if="adminMode" class="px-6 py-3 text-xs font-bold text-right uppercase">Delete</th>
+        <th scope="col" v-if="userMode" class="px-6 py-3 text-xs font-bold text-right uppercase">Comprar/Vender</th>
       </tr>
     </thead>
     <tbody class="divide-y bg-slate-800 divide-slate-200">
@@ -18,7 +19,16 @@
         <td class="px-6 py-4 whitespace-nowrap">{{ item.quantity }}</td>
         <td class="px-6 py-4 whitespace-nowrap">{{ item.value }}</td>
 
-        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+        <td  v-if="userMode" class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+          <buttonComponent
+            type="success"
+            text="Realizar Ação"
+            @click="console.log(item.id)"
+          ></buttonComponent>
+        </td>
+
+
+        <td  v-if="adminMode" class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
           <buttonComponent
             type="danger"
             text="Deletar"
@@ -51,7 +61,7 @@ export default {
     userMode: {
       type: Boolean,
       required: false,
-      default: false
+      default: true
     },
     deleteMethod: {
       type: Function,
