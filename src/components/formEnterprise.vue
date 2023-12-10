@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-mutating-props -->
 <template>
   <modalComponent :show="show">
     <div
@@ -10,23 +11,26 @@
           label="Empresa :"
           placeholder="Ex : Apple, Microsoft..."
           :value="enterprise.name"
+          @change="enterprise.name = $event.target.value"
         ></inputComponent>
         <inputComponent
           type="number"
           label="Preço unitário da ação :"
           placeholder="Em reais"
           :value="enterprise.value"
+          @change="enterprise.value = $event.target.value"
         ></inputComponent>
         <inputComponent
           type="number"
           label="Qtd. Ações no mercado :"
           placeholder="10, 100, 1000..."
-          :value="enterprise.required"
+          :value="enterprise.quantity"
+          @change="enterprise.quantity = $event.target.value"
         ></inputComponent>
       </div>
 
       <div class="flex justify-end items-center gap-5">
-        <buttonComponent type="success" text="Adicionar"></buttonComponent>
+        <buttonComponent type="success" @click="addMethod" text="Adicionar"></buttonComponent>
         <buttonComponent @click="closeMethod" type="danger" text="Cancelar"></buttonComponent>
       </div>
     </div>
@@ -37,6 +41,7 @@
 import modalComponent from './modalcomponent.vue'
 import inputComponent from './inputComponent.vue'
 import buttonComponent from './buttonComponent.vue'
+
 export default {
   name: 'formEnterpriseComponent',
   components: {

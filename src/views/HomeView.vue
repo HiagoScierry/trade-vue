@@ -34,8 +34,8 @@
             <div class="flex justify-end items-center flex-col">
               <!-- INFO USER -->
               <div v-if="modeUser">
-                <div class="text-xl mb-2">Olá, {{ currentUser.name }}</div>
-                <div class="text-base mb-2">CPF: {{ currentUser.cpf }}</div>
+                <div class="text-xl mb-2">Olá, {{ user.name }}</div>
+                <div class="text-base mb-2">CPF: {{ user.cpf }}</div>
                 <div class="text-md text-slate-300">
                   Seu saldo é de:
                   {{
@@ -43,14 +43,14 @@
                       style: 'currency',
                       currency: 'BRL',
                       minimumFractionDigits: 2
-                    }).format(currentUser.amountValue)
+                    }).format(user.amountValue)
                   }}
                 </div>
               </div>
             </div>
           </div>
         </div>
-          <tableListComponent :items="enterprises"></tableListComponent>
+          <tableListComponent :deleteMethod="deleteEnterprise" :items="enterprises"></tableListComponent>
       </div>
     </div>
 
@@ -73,6 +73,7 @@
       :enterprise="enterprise"
       :show="showFormEnterprise"
       :closeMethod="closeModalToAddEnterprise"
+      :addMethod="addEnterprise"
     ></formEnterpriseComponent>
   </layout>
 </template>
@@ -127,6 +128,9 @@ export default {
     },
     modeUser() {
       return this.$store.state.loggedStore.userIsLogged
+    },
+    user() {
+      return this.$store.state.loggedStore.user
     }
   },
 
@@ -141,12 +145,21 @@ export default {
     },
     addEnterprise() {
       //Make a funcion to save in store
-      this.closeModalToAddEnterprise()
+      this.closeModalToAddEnterprise();
+
+      this.$store.dispatch('createEnterprise', this.enterprise);
+
+      console.log(this.enterprise);
+
       this.enterprise = {
         name: '',
         value: 0,
         quantity: 0
-      }
+      };
+    },
+
+    deleteEnterprise(id) {
+      this.$store.dispatch('deleteEnterprise', id)
     },
 
     openModalToLogin() {
@@ -165,6 +178,12 @@ export default {
         return
       }
       this.$store.dispatch('loginUser', this.currentUser)
+      this.selectedCPFValue = ''
+      this.currentUser = {
+        name: '',
+        cpf: '',
+        amountValue: 0
+      };
     },
 
     setSelectedCPFValue(value) {
@@ -188,6 +207,11 @@ export default {
       //Make a funcion to save in store
 
       this.$store.dispatch('createUser', this.currentUser)
+      this.currentUser = {
+        name: '',
+        cpf: '',
+        amountValue: 0
+      };
 
       this.closeModalToRegister()
     },

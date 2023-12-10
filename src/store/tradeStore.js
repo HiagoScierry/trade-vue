@@ -29,7 +29,30 @@ export default {
         ],
     },
     mutations: {
+        CREATE_ENTERPRISE(state, enterprise) {
+            state.enterprises.push(enterprise);
+        },
+        DELETE_ENTERPRISE(state, id) {
+            state.enterprises.splice(id, 1);
+        }
     },
     actions: {
+        createEnterprise(context, enterprise) {
+            const newStore = {
+                id: context.state.enterprises.length + 1,
+                name: enterprise.name,
+                value: parseInt(enterprise.value),
+                quantity: parseInt(enterprise.quantity),
+            };
+
+            context.commit('CREATE_ENTERPRISE', newStore);
+        },
+
+        deleteEnterprise(context, id) {
+            const index = context.state.enterprises.findIndex(enterprise => enterprise.id === id);
+            context.commit('DELETE_ENTERPRISE', index);
+        }
+
+
     },
 };

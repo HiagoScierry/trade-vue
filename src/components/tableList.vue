@@ -8,7 +8,6 @@
           Quantidade de ações
         </th>
         <th scope="col" class="px-6 py-3 text-xs font-bold text-left uppercase">Valor Unitario</th>
-        <th scope="col" class="px-6 py-3 text-xs font-bold text-right uppercase">Editar</th>
         <th scope="col" class="px-6 py-3 text-xs font-bold text-right uppercase">Delete</th>
       </tr>
     </thead>
@@ -18,18 +17,12 @@
         <td class="px-6 py-4 whitespace-nowrap">{{ item.name }}</td>
         <td class="px-6 py-4 whitespace-nowrap">{{ item.quantity }}</td>
         <td class="px-6 py-4 whitespace-nowrap">{{ item.value }}</td>
-        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-          <buttonComponent
-            type="primary"
-            text="Editar"
-            @click="openModalToEditEnterprise(item)"
-          ></buttonComponent>
-        </td>
+
         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
           <buttonComponent
             type="danger"
             text="Deletar"
-            @click="deleteEnterprise(item)"
+            @click="deleteMethod(item.id)"
           ></buttonComponent>
         </td>
       </tr>
@@ -38,7 +31,6 @@
 </template>
 
 <script>
-
 import buttonComponent from '@/Components/buttonComponent.vue'
 
 export default {
@@ -50,7 +42,21 @@ export default {
     items: {
       type: Array,
       required: true
+    },
+    adminMode: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    userMode: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    deleteMethod: {
+      type: Function,
+      required: false
     }
-  },
+  }
 }
 </script>
