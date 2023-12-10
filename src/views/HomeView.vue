@@ -11,7 +11,7 @@
           <li class="cursor-pointer" v-if="!modeAdmin && !modeUser" @click="openModalToRegister">
             Registre-se
           </li>
-          <li class="cursor-pointer" v-if="modeAdmin || modeUser" @click="exitAdminMode">Sair</li>
+          <li class="cursor-pointer" v-if="modeAdmin || modeUser" @click="logout">Sair</li>
         </ul>
       </nav>
     </div>
@@ -50,7 +50,7 @@
             </div>
           </div>
         </div>
-        <tableListComponent :items="enterprises"></tableListComponent>
+          <tableListComponent :items="enterprises"></tableListComponent>
       </div>
     </div>
 
@@ -158,9 +158,12 @@ export default {
       this.showFormLogin = false
     },
     loginMethod() {
-      //Make a funcion to save in store
       this.closeModalToLogin()
       this.currentUser = this.users.find((user) => user.cpf === this.selectedCPFValue)
+      if (this.currentUser === undefined) {
+        alert('Usuário não encontrado')
+        return
+      }
       this.$store.dispatch('loginUser', this.currentUser)
     },
 
@@ -183,11 +186,26 @@ export default {
 
     registerMethod() {
       //Make a funcion to save in store
+
+      this.$store.dispatch('createUser', this.currentUser)
+
       this.closeModalToRegister()
     },
 
     exitAdminMode() {
       this.$store.dispatch('exitAdmin')
+    },
+
+    exitUserMode() {
+      this.$store.dispatch('logoutUser')
+    },
+
+    logout() {
+      if (this.modeAdmin) {
+        this.exitAdminMode()
+      } else if (this.modeUser) {
+        this.exitUserMode()
+      }
     }
   }
 }

@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-mutating-props -->
 <template>
   <modalComponent :show="show">
     <div
@@ -14,6 +15,7 @@
                 placeholder="Nome"
                 class="w-full"
                 :value="user.name"
+                @change="user.name = $event.target.value"
             ></inputComponent>
 
             <inputComponent
@@ -22,6 +24,7 @@
                 placeholder="CPF"
                 class="w-full"
                 :value="user.cpf"
+                @change="user.cpf = $event.target.value"
             ></inputComponent>
 
             <inputComponent
@@ -30,13 +33,14 @@
                 placeholder="R$ 10000,00"
                 class="w-full"
                 :value="user.amountValue"
+                @change="user.amountValue = $event.target.value"
             ></inputComponent>
 
 
         </div>
 
       <div class="flex justify-center items-center w-full gap-5 ">
-        <buttonComponent @click="loginMethod" type="success" text="Registrar"></buttonComponent>
+        <buttonComponent @click="registerMethod" type="success" text="Registrar"></buttonComponent>
         <buttonComponent @click="closeMethod" type="danger" text="Cancelar"></buttonComponent>
       </div>
     </div>
@@ -75,6 +79,6 @@ export default {
       type: Object,
       required: true
     }
-  }
+  },
 }
 </script>

@@ -15,7 +15,8 @@ export default {
         LOGOUT_USER(state) {
             state.userIsLogged = false;
             state.user = null;
-        }
+        },
+
 
     },
     actions: {
@@ -27,7 +28,7 @@ export default {
         },
         logoutUser(context) {
             context.commit('LOGOUT_USER');
-        }
+        },
     },
 
 

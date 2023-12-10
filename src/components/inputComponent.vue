@@ -6,7 +6,9 @@
         :id="label"
         :name="label"
         class="w-full px-3 py-2 border border-slate-300 bg-slate-700 text-slate-300 rounded-md focus:outline-none focus:border-slate-500"
-        :placeholder="placeholder">
+        :placeholder="placeholder"
+        @change="$emit('change', $event.target.value)"
+        >
 </div>
 </template>
 
