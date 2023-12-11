@@ -38,19 +38,18 @@
                 <div class="text-base mb-2">CPF: {{ user.cpf }}</div>
                 <div class="text-md text-slate-300">
                   Seu saldo é de:
-                  {{
-                    new Intl.NumberFormat('pt-BR', {
-                      style: 'currency',
-                      currency: 'BRL',
-                      minimumFractionDigits: 2
-                    }).format(user.amountValue)
-                  }}
+                  {{ currencyConverter.format(user.amountValue) }}
                 </div>
               </div>
             </div>
           </div>
         </div>
-          <tableListComponent :deleteMethod="deleteEnterprise" :adminMode="modeAdmin" :userMode="modeUser" :items="enterprises"></tableListComponent>
+        <tableListComponent
+          :deleteMethod="deleteEnterprise"
+          :adminMode="modeAdmin"
+          :userMode="modeUser"
+          :items="enterprises"
+        ></tableListComponent>
       </div>
     </div>
 
@@ -85,6 +84,8 @@ import tableListComponent from '@/Components/tableList.vue'
 import formEnterpriseComponent from '@/Components/formEnterprise.vue'
 import formLoginComponent from '@/Components/formLogin.vue'
 import formRegister from '../components/formRegister.vue'
+
+import { currencyConverter } from '@/utils/currencyConverter.js'
 
 export default {
   name: 'HomeView',
@@ -135,6 +136,7 @@ export default {
   },
 
   methods: {
+    currencyConverter,
     openModalToAddEnterprise() {
       this.showAnyModal = true
       this.showFormEnterprise = true
@@ -145,17 +147,17 @@ export default {
     },
     addEnterprise() {
       //Make a funcion to save in store
-      this.closeModalToAddEnterprise();
+      this.closeModalToAddEnterprise()
 
-      this.$store.dispatch('createEnterprise', this.enterprise);
+      this.$store.dispatch('createEnterprise', this.enterprise)
 
-      console.log(this.enterprise);
+      console.log(this.enterprise)
 
       this.enterprise = {
         name: '',
         value: 0,
         quantity: 0
-      };
+      }
     },
 
     deleteEnterprise(id) {
@@ -183,7 +185,7 @@ export default {
         name: '',
         cpf: '',
         amountValue: 0
-      };
+      }
     },
 
     setSelectedCPFValue(value) {
@@ -211,7 +213,7 @@ export default {
         name: '',
         cpf: '',
         amountValue: 0
-      };
+      }
 
       this.closeModalToRegister()
     },
