@@ -23,7 +23,7 @@
           <buttonComponent
             type="success"
             text="Realizar Ação"
-            @click="console.log(item.id)"
+            @click="openBuyModal(item.id)"
           ></buttonComponent>
         </td>
 
@@ -64,6 +64,14 @@ export default {
       default: true
     },
     deleteMethod: {
+      type: Function,
+      required: false
+    },
+    buyMethod: {
+      type: Function,
+      required: false
+    },
+    openBuyModal: {
       type: Function,
       required: false
     }

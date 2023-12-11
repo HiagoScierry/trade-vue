@@ -38,7 +38,13 @@
                 <div class="text-base mb-2">CPF: {{ user.cpf }}</div>
                 <div class="text-md text-slate-300">
                   Seu saldo é de:
-                  {{ currencyConverter.format(user.amountValue) }}
+                  {{
+                    new Intl.NumberFormat('pt-BR', {
+                      style: 'currency',
+                      currency: 'BRL',
+                      minimumFractionDigits: 2
+                    }).format(user.amountValue)
+                  }}
                 </div>
               </div>
             </div>
@@ -46,6 +52,7 @@
         </div>
         <tableListComponent
           :deleteMethod="deleteEnterprise"
+          :openBuyModal="openModalToBuyStock"
           :adminMode="modeAdmin"
           :userMode="modeUser"
           :items="enterprises"
@@ -74,6 +81,13 @@
       :closeMethod="closeModalToAddEnterprise"
       :addMethod="addEnterprise"
     ></formEnterpriseComponent>
+
+    <formBuyStockComponent
+      :show="showFormBuyStock"
+      :closeMethod="closeModalToBuyStock"
+      :buyMethod="buyStock"
+      :user="user"
+      :enterprise="selectedEnterprise"></formBuyStockComponent>
   </layout>
 </template>
 
@@ -83,9 +97,8 @@ import buttonComponent from '@/Components/buttonComponent.vue'
 import tableListComponent from '@/Components/tableList.vue'
 import formEnterpriseComponent from '@/Components/formEnterprise.vue'
 import formLoginComponent from '@/Components/formLogin.vue'
-import formRegister from '../components/formRegister.vue'
-
-import { currencyConverter } from '@/utils/currencyConverter.js'
+import formRegister from '@/Components/formRegister.vue'
+import formBuyStockComponent from '@/Components/formBuyStock.vue'
 
 export default {
   name: 'HomeView',
@@ -95,15 +108,22 @@ export default {
     tableListComponent,
     formEnterpriseComponent,
     formLoginComponent,
-    formRegister
+    formRegister,
+    formBuyStockComponent
   },
   // create data
   data: function () {
     return {
-      showAnyModal: false,
+      showAnyModal: true,
       showFormEnterprise: false,
       showFormLogin: false,
       showFormRegister: false,
+      showFormBuyStock: true,
+      selectedEnterprise: {
+        name: '',
+        value: 0,
+        quantity: 0
+      },
       enterprise: {
         name: '',
         value: 0,
@@ -136,7 +156,6 @@ export default {
   },
 
   methods: {
-    currencyConverter,
     openModalToAddEnterprise() {
       this.showAnyModal = true
       this.showFormEnterprise = true
@@ -232,6 +251,29 @@ export default {
       } else if (this.modeUser) {
         this.exitUserMode()
       }
+    },
+
+    openModalToBuyStock(enterprise) {
+      this.showAnyModal = true
+      this.showFormBuyStock = true
+      this.selectedEnterprise = enterprise
+    },
+    closeModalToBuyStock() {
+      this.showAnyModal = false
+      this.showFormBuyStock = false
+      this.selectedEnterprise = {
+        name: '',
+        value: 0,
+        quantity: 0
+      }
+    },
+    buyStock(quantity) {
+      this.closeModalToBuyStock()
+      this.$store.dispatch('buyStock', {
+        user: this.user,
+        enterprise: this.selectedEnterprise,
+        quantity: quantity
+      })
     }
   }
 }
