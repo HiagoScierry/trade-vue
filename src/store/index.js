@@ -13,15 +13,23 @@ export default new Vuex.Store({
         tradeStore: tradeStore,
         loggedStore: loggedStore
     },
-    actions: {
-        saveInLocalStorage: function (state) {
-            localStorage.setItem('store', JSON.stringify(state));
+    mutations: {
+        GET_FROM_LOCAL_STORAGE(state, payload) {
+            state.userStore.users = payload.userStore.users;
+            state.tradeStore.enterprises = payload.tradeStore.enterprises;
+            state.loggedStore.loggedUser = payload.loggedStore.loggedUser;
         },
-        getFromLocalStorage: function (state) {
+    },
+    actions: {
+        saveInLocalStorage: function (context) {
+            localStorage.setItem('store', JSON.stringify(context.state));
+        },
+        getFromLocalStorage: function (context) {
             const store = localStorage.getItem('store');
             if (store) {
-                this.replaceState(Object.assign(state, JSON.parse(store)));
+                context.commit('GET_FROM_LOCAL_STORAGE', JSON.parse(store));
             }
+
         },
         buyStock(context, payload) {
             //getUser and getEnterprise

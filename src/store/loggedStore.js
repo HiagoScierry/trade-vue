@@ -33,7 +33,6 @@ export default {
         logoutUser(context) {
             context.commit('LOGOUT_USER');
             context.dispatch('saveInLocalStorage');
-
         },
 
     },

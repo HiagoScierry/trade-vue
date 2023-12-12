@@ -185,6 +185,14 @@
       :enterprise="selectedEnterprise"
       @changedValue="setQuantity"
     ></formBuyStockComponent>
+
+    <div class="m-8 flex flex-col justify-center items-center">
+      <h2 class="text-md">
+        Desenvolvido por : Davidson Venali e Hiago Moreira
+      </h2>
+      <p class="text-sm">Trabalho T2: TEMA 4 - “TRADE”, </p>
+
+    </div>
   </layout>
 </template>
 
@@ -413,9 +421,5 @@ export default {
       this.quantity = value
     }
   },
-  mounted() {
-    console.log('mounted')
-    this.$store.dispatch('getFromLocalStorage')
-  }
 }
 </script>
