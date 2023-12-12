@@ -50,13 +50,108 @@
             </div>
           </div>
         </div>
-        <tableListComponent
-          :deleteMethod="deleteEnterprise"
-          :openBuyModal="openModalToBuyStock"
-          :adminMode="modeAdmin"
-          :userMode="modeUser"
-          :items="enterprises"
-        ></tableListComponent>
+        <table class="min-w-full divide-y divide-slate-200 rounded-2xl text-slate-200">
+          <thead class="bg-slate-900">
+            <tr>
+              <th scope="col" class="px-6 py-3 text-xs font-bold text-left uppercase">ID</th>
+              <th scope="col" class="px-6 py-3 text-xs font-bold text-left uppercase">Empresa</th>
+              <th scope="col" class="px-6 py-3 text-xs font-bold text-left uppercase">
+                Quantidade de ações
+              </th>
+              <th scope="col" class="px-6 py-3 text-xs font-bold text-left uppercase">
+                Valor Unitario
+              </th>
+              <th
+                scope="col"
+                v-if="modeUser"
+                class="px-6 py-3 text-xs font-bold text-left uppercase"
+              >
+                Quantidade de ações obtidas
+              </th>
+              <th
+                scope="col"
+                v-if="modeUser"
+                class="px-6 py-3 text-xs font-bold text-left uppercase"
+              >
+                Valor total de ações obtidas
+              </th>
+
+              <th
+                scope="col"
+                v-if="modeAdmin"
+                class="px-6 py-3 text-xs font-bold text-right uppercase"
+              >
+                Delete
+              </th>
+              <th
+                scope="col"
+                v-if="modeUser"
+                class="px-6 py-3 text-xs font-bold text-right uppercase"
+              >
+                Comprar/Vender
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y bg-slate-800 divide-slate-200">
+            <tr v-for="item in enterprises" :key="item.id">
+              <td class="px-6 py-4 whitespace-nowrap">{{ item.id }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ item.name }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ item.quantity }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                {{
+                  new Intl.NumberFormat('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL',
+                    minimumFractionDigits: 2
+                  }).format(item.value)
+                }}
+              </td>
+
+              <td
+                scope="col"
+                v-if="modeUser"
+                class="px-6 py-3 text-xs font-bold text-left uppercase"
+              >
+                {{ getCountActions(item.id) }}
+              </td>
+              <td
+                scope="col"
+                v-if="modeUser"
+                class="px-6 py-3 text-xs font-bold text-left uppercase"
+              >
+                {{
+                  new Intl.NumberFormat('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL',
+                    minimumFractionDigits: 2
+                  }).format(getCountActions(item.id) * parseInt(item.value))
+                }}
+              </td>
+
+              <td
+                v-if="modeUser"
+                class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+              >
+                <buttonComponent
+                  type="success"
+                  text="Realizar Ação"
+                  @click="openModalToBuyStock(item.id)"
+                ></buttonComponent>
+              </td>
+
+              <td
+                v-if="modeAdmin"
+                class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+              >
+                <buttonComponent
+                  type="danger"
+                  text="Deletar"
+                  @click="deleteEnterprise(item.id)"
+                ></buttonComponent>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
@@ -89,7 +184,6 @@
       :user="user"
       :enterprise="selectedEnterprise"
       @changedValue="setQuantity"
-
     ></formBuyStockComponent>
   </layout>
 </template>
@@ -97,7 +191,6 @@
 <script>
 import LayoutComponent from '@/Components/layout.vue'
 import buttonComponent from '@/Components/buttonComponent.vue'
-import tableListComponent from '@/Components/tableList.vue'
 import formEnterpriseComponent from '@/Components/formEnterprise.vue'
 import formLoginComponent from '@/Components/formLogin.vue'
 import formRegister from '@/Components/formRegister.vue'
@@ -108,7 +201,6 @@ export default {
   components: {
     layout: LayoutComponent,
     buttonComponent,
-    tableListComponent,
     formEnterpriseComponent,
     formLoginComponent,
     formRegister,
@@ -159,8 +251,30 @@ export default {
       return this.$store.state.loggedStore.user
     }
   },
-
   methods: {
+    getCountActions(id) {
+      const proxy = new Proxy(this.user.investEnterprises, {})
+      //Convert proxy object to array
+      const array = Object.keys(proxy).map((key) => proxy[key])
+      const newArray = []
+
+      for (let i = 0; i < array.length; i++) {
+        const obj = {
+          id: array[i].idEnterprise,
+          countActions: +array[i].countActions
+        }
+        newArray.push(obj)
+      }
+
+      const pos = newArray.findIndex((enterprise) => enterprise.id == id)
+
+      if (pos === -1) {
+        return 0
+      }
+
+      return newArray[pos].countActions
+      // return newArray.length > 0 ? newArray.find((enterprise) => enterprise.id == id).countActions : 0
+    },
     openModalToAddEnterprise() {
       this.showAnyModal = true
       this.showFormEnterprise = true
@@ -282,9 +396,8 @@ export default {
           enterprise: this.selectedEnterprise,
           quantity: this.quantity
         })
-        this.closeModalToBuyStock()
       } else if (typeAction === 'sell') {
-        if (this.user.amountValue < this.selectedEnterprise.value * this.quantity) {
+        if (this.getCountActions(this.selectedEnterprise.id) < this.quantity) {
           alert('Saldo insuficiente')
           return
         }
@@ -293,12 +406,12 @@ export default {
           enterprise: this.selectedEnterprise,
           quantity: this.quantity
         })
-        this.closeModalToBuyStock()
       }
+      this.closeModalToBuyStock()
     },
     setQuantity(value) {
       this.quantity = value
-    },
+    }
   }
 }
 </script>

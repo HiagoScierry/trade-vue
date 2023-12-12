@@ -19,8 +19,6 @@ export default new Vuex.Store({
             const user = context.state.userStore.users.find(user => user.cpf === payload.user.cpf);
             const enterprise = context.state.tradeStore.enterprises.find(enterprise => enterprise.id === payload.enterprise.id);
 
-            console.log(user, enterprise, payload.quantity)
-
             if (user.amountValue < payload.quantity * enterprise.value) {
                 alert("Saldo insuficiente");
                 return;
@@ -38,7 +36,7 @@ export default new Vuex.Store({
             const index = user.investEnterprises.findIndex(item => item.idEnterprise === enterprise.id);
 
             if (index !== -1) {
-                user.investEnterprises[index].countActions += payload.quantity;
+                user.investEnterprises[index].countActions = parseInt(user.investEnterprises[index].countActions) + parseInt(payload.quantity);
             } else {
                 user.investEnterprises.push({
                     idEnterprise: enterprise.id,

@@ -8,6 +8,13 @@
           Quantidade de ações
         </th>
         <th scope="col" class="px-6 py-3 text-xs font-bold text-left uppercase">Valor Unitario</th>
+        <th scope="col" v-if="userMode" class="px-6 py-3 text-xs font-bold text-left uppercase">
+          Quantidade de ações obtidas
+        </th>
+        <th scope="col" v-if="userMode" class="px-6 py-3 text-xs font-bold text-left uppercase">
+          Valor total de ações obtidas
+        </th>
+
         <th scope="col" v-if="adminMode" class="px-6 py-3 text-xs font-bold text-right uppercase">
           Delete
         </th>
@@ -23,11 +30,28 @@
         <td class="px-6 py-4 whitespace-nowrap">{{ item.quantity }}</td>
         <td class="px-6 py-4 whitespace-nowrap">
           {{
-                    new Intl.NumberFormat('pt-BR', {
-                      style: 'currency',
-                      currency: 'BRL',
-                      minimumFractionDigits: 2
-                    }).format(item.value)
+            new Intl.NumberFormat('pt-BR', {
+              style: 'currency',
+              currency: 'BRL',
+              minimumFractionDigits: 2
+            }).format(item.value)
+          }}
+        </td>
+
+        <td scope="col" v-if="userMode" class="px-6 py-3 text-xs font-bold text-left uppercase">
+          {{
+            getUserActions(item.id)
+          }}
+        </td>
+        <td scope="col" v-if="userMode" class="px-6 py-3 text-xs font-bold text-left uppercase">
+          {{
+            new Intl.NumberFormat('pt-BR', {
+              style: 'currency',
+              currency: 'BRL',
+              minimumFractionDigits: 2
+            }).format(
+              getUserActions(item.id) * item.value
+            )
           }}
         </td>
 
@@ -85,7 +109,7 @@ export default {
     openBuyModal: {
       type: Function,
       required: false
-    }
-  }
+    },
+  },
 }
 </script>
