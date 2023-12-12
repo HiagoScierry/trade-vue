@@ -34,6 +34,10 @@ export default {
         },
         DELETE_ENTERPRISE(state, id) {
             state.enterprises.splice(id, 1);
+        },
+        UPDATE_ENTERPRISE(state, enterprise) {
+            const index = state.enterprises.findIndex(item => item.id === enterprise.id);
+            state.enterprises[index] = enterprise;
         }
     },
     actions: {

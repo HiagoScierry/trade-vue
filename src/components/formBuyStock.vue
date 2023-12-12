@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-mutating-props -->
 <template>
   <modalComponent :show="show">
     <div
@@ -12,31 +13,38 @@
       <p class="text-sm">Veja as informações abaixo</p>
       <!-- Dados da empresa -->
       <div class="w-full flex justify-between items-center gap-10 mt-4">
-        <h2 class="text-sm">{{ enterprise.name || "Nome indefinido" }}</h2>
+        <h2 class="text-sm">Referena a {{ enterprise.name || 'Nome indefinido' }}</h2>
         <div class="flex flex-col justify-between items-end">
           <p class="text-sm">Ações disponíveis : {{ enterprise.quantity }}</p>
-          <p class="text-sm">Valor : {{ enterprise.value }}</p>
+          <p class="text-sm">
+            Valor :
+            {{
+              new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+                minimumFractionDigits: 2
+              }).format(enterprise.value)
+            }}
+          </p>
         </div>
       </div>
 
-      <inputcomponent
+      <inputComponent
         type="number"
-        label="Valor em Conta :"
-        placeholder="R$ 10000,00"
+        label="Quantidade de ações a serem utilizadas:"
+        placeholder="10,20,30..."
         class="w-full"
-        :value="0"
-        @change="console.log($event.target.value)"
-      ></inputcomponent>
-
+        :value="quantity"
+        @change="changeQuantityValue"
+      ></inputComponent>
 
       <div class="m-4">
         <p class="text-sm">Total a se pagar : <span class="text-lg font-bold">10</span></p>
       </div>
 
-
       <div class="flex justify-center items-center w-full gap-5">
-        <buttonComponent @click="buyMethod" type="success" text="Comprar"></buttonComponent>
-        <buttonComponent @click="buyMethod" type="primary" text="Vender"></buttonComponent>
+        <buttonComponent @click="buyMethod('buy')" type="success" text="Comprar"></buttonComponent>
+        <buttonComponent @click="buyMethod('sell')" type="primary" text="Vender"></buttonComponent>
         <buttonComponent @click="closeMethod" type="danger" text="Cancelar"></buttonComponent>
       </div>
     </div>
@@ -45,15 +53,15 @@
 
 <script>
 import modalComponent from './modalcomponent.vue'
-import buttonComponent from './buttonComponent.vue'
-import inputcomponent from './inputcomponent.vue'
+import buttonComponent from './buttoncomponent.vue'
+import inputComponent from './inputcomponent.vue'
 
 export default {
   name: 'fornBuyStockComponent',
   components: {
     modalComponent,
     buttonComponent,
-    inputcomponent
+    inputComponent
   },
   props: {
     show: {
@@ -72,6 +80,16 @@ export default {
     closeMethod: {
       type: Function,
       required: true
+    },
+    quantity: {
+      type: Number,
+      required: true
+    }
+  },
+  methods: {
+    changeQuantityValue(event) {
+      console.l
+      this.$emit('changedValue', event.target.value)
     }
   }
 }

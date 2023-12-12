@@ -87,7 +87,10 @@
       :closeMethod="closeModalToBuyStock"
       :buyMethod="buyStock"
       :user="user"
-      :enterprise="selectedEnterprise"></formBuyStockComponent>
+      :enterprise="selectedEnterprise"
+      @changedValue="setQuantity"
+
+    ></formBuyStockComponent>
   </layout>
 </template>
 
@@ -114,12 +117,13 @@ export default {
   // create data
   data: function () {
     return {
-      showAnyModal: true,
+      showAnyModal: false,
       showFormEnterprise: false,
       showFormLogin: false,
       showFormRegister: false,
-      showFormBuyStock: true,
+      showFormBuyStock: false,
       selectedEnterprise: {
+        id: 0,
         name: '',
         value: 0,
         quantity: 0
@@ -134,7 +138,8 @@ export default {
         name: '',
         cpf: '',
         amountValue: 0
-      }
+      },
+      quantity: 0
     }
   },
   computed: {
@@ -169,8 +174,6 @@ export default {
       this.closeModalToAddEnterprise()
 
       this.$store.dispatch('createEnterprise', this.enterprise)
-
-      console.log(this.enterprise)
 
       this.enterprise = {
         name: '',
@@ -208,7 +211,6 @@ export default {
     },
 
     setSelectedCPFValue(value) {
-      console.log(value)
       this.selectedCPFValue = value
     },
 
@@ -253,10 +255,12 @@ export default {
       }
     },
 
-    openModalToBuyStock(enterprise) {
+    openModalToBuyStock(enterpriseID) {
       this.showAnyModal = true
       this.showFormBuyStock = true
-      this.selectedEnterprise = enterprise
+      this.selectedEnterprise = this.$store.state.tradeStore.enterprises.find(
+        (item) => item.id === enterpriseID
+      )
     },
     closeModalToBuyStock() {
       this.showAnyModal = false
@@ -267,14 +271,34 @@ export default {
         quantity: 0
       }
     },
-    buyStock(quantity) {
-      this.closeModalToBuyStock()
-      this.$store.dispatch('buyStock', {
-        user: this.user,
-        enterprise: this.selectedEnterprise,
-        quantity: quantity
-      })
-    }
+    buyStock(typeAction) {
+      if (typeAction === 'buy') {
+        if (this.user.amountValue < this.selectedEnterprise.value * this.quantity) {
+          alert('Saldo insuficiente')
+          return
+        }
+        this.$store.dispatch('buyStock', {
+          user: this.user,
+          enterprise: this.selectedEnterprise,
+          quantity: this.quantity
+        })
+        this.closeModalToBuyStock()
+      } else if (typeAction === 'sell') {
+        if (this.user.amountValue < this.selectedEnterprise.value * this.quantity) {
+          alert('Saldo insuficiente')
+          return
+        }
+        this.$store.dispatch('sellStock', {
+          user: this.user,
+          enterprise: this.selectedEnterprise,
+          quantity: this.quantity
+        })
+        this.closeModalToBuyStock()
+      }
+    },
+    setQuantity(value) {
+      this.quantity = value
+    },
   }
 }
 </script>

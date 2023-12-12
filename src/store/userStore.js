@@ -4,7 +4,6 @@ import formatCPF from "../util/formatCPF";
 
 // interface investEnterprises {
 //     idEnterprise: number;
-//     amountValue: number;
 //     countActions: number;
 // }
 
@@ -35,6 +34,10 @@ export default {
     mutations: {
         CREATE_USER(state, user) {
             state.users.push(user);
+        },
+        UPDATE_USER(state, user) {
+            const index = state.users.findIndex(item => item.cpf === user.cpf);
+            state.users[index] = user;
         }
     },
     actions: {
