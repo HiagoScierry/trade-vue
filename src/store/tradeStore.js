@@ -50,11 +50,15 @@ export default {
             };
 
             context.commit('CREATE_ENTERPRISE', newStore);
+            context.dispatch('saveInLocalStorage');
+
         },
 
         deleteEnterprise(context, id) {
             const index = context.state.enterprises.findIndex(enterprise => enterprise.id === id);
             context.commit('DELETE_ENTERPRISE', index);
+            context.dispatch('saveInLocalStorage');
+
         }
 
 

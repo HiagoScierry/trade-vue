@@ -50,6 +50,8 @@ export default {
             }
 
             context.commit('CREATE_USER', newUser);
+            context.dispatch('saveInLocalStorage');
+
         }
     },
 }

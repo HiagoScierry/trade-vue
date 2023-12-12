@@ -22,13 +22,20 @@ export default {
     actions: {
         exitAdmin(context) {
             context.commit('EXIT_ADMIN');
+            context.dispatch('saveInLocalStorage');
+
         },
         loginUser(context, user) {
             context.commit('LOGIN_USER', user);
+            context.dispatch('saveInLocalStorage');
+
         },
         logoutUser(context) {
             context.commit('LOGOUT_USER');
+            context.dispatch('saveInLocalStorage');
+
         },
+
     },
 
 

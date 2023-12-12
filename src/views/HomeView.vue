@@ -412,6 +412,10 @@ export default {
     setQuantity(value) {
       this.quantity = value
     }
+  },
+  mounted() {
+    console.log('mounted')
+    this.$store.dispatch('getFromLocalStorage')
   }
 }
 </script>

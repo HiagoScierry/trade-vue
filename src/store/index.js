@@ -14,6 +14,15 @@ export default new Vuex.Store({
         loggedStore: loggedStore
     },
     actions: {
+        saveInLocalStorage: function (state) {
+            localStorage.setItem('store', JSON.stringify(state));
+        },
+        getFromLocalStorage: function (state) {
+            const store = localStorage.getItem('store');
+            if (store) {
+                this.replaceState(Object.assign(state, JSON.parse(store)));
+            }
+        },
         buyStock(context, payload) {
             //getUser and getEnterprise
             const user = context.state.userStore.users.find(user => user.cpf === payload.user.cpf);
@@ -51,6 +60,8 @@ export default new Vuex.Store({
 
             context.commit('UPDATE_ENTERPRISE', enterprise, { root: true });
 
+            context.dispatch('saveInLocalStorage');
+
         },
         sellStock(context, payload) {
             //getUser and getEnterprise
@@ -84,6 +95,9 @@ export default new Vuex.Store({
             enterprise.quantity = parseInt(enterprise.quantity) + parseInt(payload.quantity);
 
             context.commit('UPDATE_ENTERPRISE', enterprise, { root: true });
+
+            context.dispatch('saveInLocalStorage');
+
         },
     }
 })
